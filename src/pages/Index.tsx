@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
+import HeroSection from '@/components/HeroSection';
 import FilterBar from '@/components/FilterBar';
 import SortingTabs from '@/components/SortingTabs';
 import ProductCard from '@/components/ProductCard';
+import SocialMediaBar from '@/components/SocialMediaBar';
 import { toast } from '@/hooks/use-toast';
 
 // Mock data for AI products
@@ -187,8 +189,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-background">
       <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      
+      {/* Hero Section */}
+      <HeroSection searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       
       <FilterBar
         selectedCategory={selectedCategory}
@@ -206,8 +211,8 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-gray-500 text-lg mb-4">没有找到匹配的产品</div>
-            <div className="text-gray-400">尝试调整搜索条件或筛选器</div>
+            <div className="text-muted-foreground text-lg mb-4">没有找到匹配的产品</div>
+            <div className="text-muted-foreground/70">尝试调整搜索条件或筛选器</div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -227,11 +232,14 @@ const Index = () => {
       {/* Load More Button */}
       {filteredProducts.length > 0 && (
         <div className="text-center pb-12">
-          <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium">
+          <button className="px-8 py-3 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-full hover:from-primary/90 hover:to-primary/70 transition-all duration-300 font-medium">
             加载更多产品
           </button>
         </div>
       )}
+
+      {/* Social Media Bar */}
+      <SocialMediaBar />
     </div>
   );
 };
