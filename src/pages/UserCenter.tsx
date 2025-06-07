@@ -1,86 +1,74 @@
 
 import React, { useState } from 'react';
+import Navbar from '@/components/Navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { User, Settings, Heart, Briefcase, Award, MessageCircle, Calendar, TrendingUp, Star } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { User, Settings, Briefcase, Users, Heart, DollarSign, Trophy, Calendar, Star, Eye } from 'lucide-react';
 
 const UserCenter = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-
-  const tabs = [
-    { id: 'overview', name: '概览', icon: TrendingUp },
-    { id: 'tasks', name: '我的任务', icon: Award },
-    { id: 'referrals', name: '推荐记录', icon: Briefcase },
-    { id: 'favorites', name: '收藏产品', icon: Heart },
-    { id: 'settings', name: '账号设置', icon: Settings }
-  ];
+  const [searchTerm, setSearchTerm] = useState('');
+  const [userType, setUserType] = useState('individual'); // 'individual' or 'enterprise'
 
   const userStats = {
-    completedTasks: 24,
-    earnedPoints: 1580,
-    successfulReferrals: 3,
-    earnedCommission: 2300,
-    favoriteProducts: 12,
-    level: 'VIP用户'
+    totalEarnings: 12580,
+    completedTasks: 23,
+    successfulReferrals: 8,
+    favoriteProducts: 15,
+    publishedProducts: userType === 'enterprise' ? 3 : 0,
+    activeJobs: userType === 'enterprise' ? 2 : 0
   };
 
   const recentTasks = [
     {
       id: 1,
-      title: '图像标注任务',
+      title: '数据标注任务',
       product: 'ChatVision AI',
-      points: 50,
-      status: 'completed',
-      completedAt: '2024-06-01'
+      status: '已完成',
+      reward: 150,
+      completedAt: '2024-06-05',
+      rating: 5
     },
     {
       id: 2,
       title: '产品测试反馈',
       product: 'AutoCode Pro',
-      points: 100,
-      status: 'in-progress',
-      deadline: '2024-06-05'
+      status: '进行中',
+      reward: 200,
+      deadline: '2024-06-10',
+      progress: 60
     },
     {
       id: 3,
-      title: '语音数据采集',
+      title: '语音数据收集',
       product: 'VoiceClone Studio',
-      points: 75,
-      status: 'available',
-      estimatedTime: '30分钟'
+      status: '已完成',
+      reward: 300,
+      completedAt: '2024-06-01',
+      rating: 4
     }
   ];
 
-  const referrals = [
+  const referralHistory = [
     {
       id: 1,
-      candidateName: '张三',
+      referredName: '张三',
       position: 'AI算法工程师',
       company: 'ChatVision AI',
-      status: 'hired',
-      commission: 1000,
-      appliedAt: '2024-05-15',
-      hiredAt: '2024-05-28'
+      status: '已入职',
+      commission: 5000,
+      date: '2024-05-20'
     },
     {
       id: 2,
-      candidateName: '李四',
-      position: '前端工程师',
-      company: 'AutoCode Pro',
-      status: 'interviewing',
-      commission: 800,
-      appliedAt: '2024-05-20'
-    },
-    {
-      id: 3,
-      candidateName: '王五',
+      referredName: '李四',
       position: '产品经理',
-      company: 'VoiceClone Studio',
-      status: 'pending',
-      commission: 1500,
-      appliedAt: '2024-05-25'
+      company: 'AutoCode Pro',
+      status: '面试中',
+      commission: 3000,
+      date: '2024-06-01'
     }
   ];
 
@@ -89,393 +77,365 @@ const UserCenter = () => {
       id: 1,
       name: 'ChatVision AI',
       category: '教育',
-      rating: 4.9,
+      likes: 1247,
       savedAt: '2024-06-01'
     },
     {
       id: 2,
       name: 'AutoCode Pro',
       category: '开发工具',
-      rating: 4.7,
+      likes: 892,
       savedAt: '2024-05-28'
-    },
-    {
-      id: 3,
-      name: 'VoiceClone Studio',
-      category: '娱乐',
-      rating: 4.8,
-      savedAt: '2024-05-25'
     }
   ];
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'completed':
-      case 'hired':
-        return 'bg-green-100 text-green-800';
-      case 'in-progress':
-      case 'interviewing':
-        return 'bg-blue-100 text-blue-800';
-      case 'available':
-      case 'pending':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+  const myProducts = [
+    {
+      id: 1,
+      name: 'AI Writing Assistant',
+      status: '已上线',
+      views: 1523,
+      likes: 234,
+      applications: 12,
+      publishedAt: '2024-05-15'
+    },
+    {
+      id: 2,
+      name: 'Smart Code Review',
+      status: '审核中',
+      views: 0,
+      likes: 0,
+      applications: 0,
+      publishedAt: '2024-06-03'
     }
-  };
-
-  const getStatusText = (status) => {
-    switch (status) {
-      case 'completed':
-        return '已完成';
-      case 'in-progress':
-        return '进行中';
-      case 'available':
-        return '可领取';
-      case 'hired':
-        return '已入职';
-      case 'interviewing':
-        return '面试中';
-      case 'pending':
-        return '待处理';
-      default:
-        return status;
-    }
-  };
-
-  const renderOverview = () => (
-    <div className="space-y-6">
-      {/* User Info */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <User className="h-8 w-8 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">John Doe</h2>
-              <p className="text-gray-600">john.doe@example.com</p>
-              <Badge className="mt-2">{userStats.level}</Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6 text-center">
-            <Award className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">{userStats.completedTasks}</div>
-            <div className="text-sm text-gray-500">完成任务</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6 text-center">
-            <Star className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">{userStats.earnedPoints}</div>
-            <div className="text-sm text-gray-500">获得积分</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6 text-center">
-            <Briefcase className="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">{userStats.successfulReferrals}</div>
-            <div className="text-sm text-gray-500">成功推荐</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6 text-center">
-            <TrendingUp className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">¥{userStats.earnedCommission}</div>
-            <div className="text-sm text-gray-500">获得佣金</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle>最近活动</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-              <Award className="h-5 w-5 text-green-600" />
-              <div className="flex-1">
-                <p className="font-medium">完成了图像标注任务</p>
-                <p className="text-sm text-gray-500">获得 50 积分 • ChatVision AI</p>
-              </div>
-              <span className="text-sm text-gray-400">2小时前</span>
-            </div>
-            
-            <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-              <Briefcase className="h-5 w-5 text-blue-600" />
-              <div className="flex-1">
-                <p className="font-medium">推荐的候选人进入面试环节</p>
-                <p className="text-sm text-gray-500">李四 • AutoCode Pro</p>
-              </div>
-              <span className="text-sm text-gray-400">1天前</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const renderTasks = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">我的任务</h2>
-        <Button>浏览更多任务</Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {recentTasks.map((task) => (
-          <Card key={task.id}>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="font-semibold text-gray-900">{task.title}</h3>
-                <Badge className={getStatusColor(task.status)}>
-                  {getStatusText(task.status)}
-                </Badge>
-              </div>
-              
-              <p className="text-sm text-gray-600 mb-3">{task.product}</p>
-              
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 text-yellow-500" />
-                  <span>{task.points} 积分</span>
-                </div>
-                
-                {task.status === 'completed' && (
-                  <span className="text-gray-500">完成于 {task.completedAt}</span>
-                )}
-                {task.status === 'in-progress' && (
-                  <span className="text-red-500">截止 {task.deadline}</span>
-                )}
-                {task.status === 'available' && (
-                  <span className="text-blue-500">预计 {task.estimatedTime}</span>
-                )}
-              </div>
-              
-              {task.status === 'available' && (
-                <Button className="w-full mt-4" size="sm">
-                  领取任务
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderReferrals = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">推荐记录</h2>
-        <Button>推荐新朋友</Button>
-      </div>
-
-      <Card>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">候选人</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">职位</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">公司</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">佣金</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">申请时间</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {referrals.map((referral) => (
-                  <tr key={referral.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-medium text-gray-900">{referral.candidateName}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {referral.position}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {referral.company}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge className={getStatusColor(referral.status)}>
-                        {getStatusText(referral.status)}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-green-600 font-medium">¥{referral.commission}</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {referral.appliedAt}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const renderFavorites = () => (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">收藏的产品</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {favoriteProducts.map((product) => (
-          <Card key={product.id}>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                <Button variant="ghost" size="sm">
-                  <Heart className="h-4 w-4 fill-current text-red-500" />
-                </Button>
-              </div>
-              
-              <Badge variant="outline" className="mb-3">
-                {product.category}
-              </Badge>
-              
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                  <span>{product.rating}</span>
-                </div>
-                <span className="text-gray-500">收藏于 {product.savedAt}</span>
-              </div>
-              
-              <Button className="w-full mt-4" size="sm" variant="outline">
-                查看详情
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderSettings = () => (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">账号设置</h2>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>个人信息</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">用户名</label>
-              <Input defaultValue="John Doe" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
-              <Input defaultValue="john.doe@example.com" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">手机号</label>
-              <Input defaultValue="+86 138****8888" />
-            </div>
-            <Button className="w-full">保存更改</Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>账号绑定</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <p className="font-medium">微信</p>
-                <p className="text-sm text-gray-500">已绑定</p>
-              </div>
-              <Button variant="outline" size="sm">解绑</Button>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <p className="font-medium">GitHub</p>
-                <p className="text-sm text-gray-500">未绑定</p>
-              </div>
-              <Button variant="outline" size="sm">绑定</Button>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <p className="font-medium">钱包地址</p>
-                <p className="text-sm text-gray-500">0x1234...abcd</p>
-              </div>
-              <Button variant="outline" size="sm">修改</Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'overview':
-        return renderOverview();
-      case 'tasks':
-        return renderTasks();
-      case 'referrals':
-        return renderReferrals();
-      case 'favorites':
-        return renderFavorites();
-      case 'settings':
-        return renderSettings();
-      default:
-        return renderOverview();
-    }
-  };
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardContent className="p-6">
-                <nav className="space-y-2">
-                  {tabs.map((tab) => {
-                    const IconComponent = tab.icon;
-                    return (
-                      <Button
-                        key={tab.id}
-                        variant={activeTab === tab.id ? "default" : "ghost"}
-                        onClick={() => setActiveTab(tab.id)}
-                        className="w-full justify-start"
-                      >
-                        <IconComponent className="h-4 w-4 mr-2" />
-                        {tab.name}
-                      </Button>
-                    );
-                  })}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            {renderContent()}
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                U
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">用户中心</h1>
+                <p className="text-gray-600">管理你的任务、推荐和收藏</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button
+                variant={userType === 'individual' ? 'default' : 'outline'}
+                onClick={() => setUserType('individual')}
+                size="sm"
+              >
+                个人用户
+              </Button>
+              <Button
+                variant={userType === 'enterprise' ? 'default' : 'outline'}
+                onClick={() => setUserType('enterprise')}
+                size="sm"
+              >
+                企业用户
+              </Button>
+            </div>
           </div>
         </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <DollarSign className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">¥{userStats.totalEarnings}</div>
+                  <div className="text-sm text-gray-500">总收益</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Trophy className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{userStats.completedTasks}</div>
+                  <div className="text-sm text-gray-500">完成任务</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Users className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{userStats.successfulReferrals}</div>
+                  <div className="text-sm text-gray-500">成功推荐</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                  <Heart className="h-6 w-6 text-red-600" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{userStats.favoriteProducts}</div>
+                  <div className="text-sm text-gray-500">收藏产品</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <Tabs defaultValue="tasks" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="tasks">我的任务</TabsTrigger>
+            <TabsTrigger value="referrals">推荐记录</TabsTrigger>
+            <TabsTrigger value="favorites">收藏产品</TabsTrigger>
+            {userType === 'enterprise' && <TabsTrigger value="products">我的产品</TabsTrigger>}
+            <TabsTrigger value="settings">账号设置</TabsTrigger>
+          </TabsList>
+
+          {/* Tasks Tab */}
+          <TabsContent value="tasks">
+            <Card>
+              <CardHeader>
+                <CardTitle>任务管理</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {recentTasks.map((task) => (
+                    <div key={task.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900">{task.title}</h3>
+                        <p className="text-sm text-gray-500">来自 {task.product}</p>
+                        
+                        {task.status === '进行中' && task.progress && (
+                          <div className="mt-2">
+                            <div className="flex justify-between text-sm mb-1">
+                              <span>进度</span>
+                              <span>{task.progress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-blue-600 h-2 rounded-full" 
+                                style={{ width: `${task.progress}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="text-right">
+                        <Badge variant={task.status === '已完成' ? 'default' : 'outline'}>
+                          {task.status}
+                        </Badge>
+                        <div className="text-lg font-semibold text-green-600 mt-1">¥{task.reward}</div>
+                        {task.rating && (
+                          <div className="flex items-center justify-end gap-1 mt-1">
+                            {[...Array(task.rating)].map((_, i) => (
+                              <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="text-center mt-6">
+                  <Button variant="outline">查看更多任务</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Referrals Tab */}
+          <TabsContent value="referrals">
+            <Card>
+              <CardHeader>
+                <CardTitle>推荐记录</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {referralHistory.map((referral) => (
+                    <div key={referral.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{referral.referredName}</h3>
+                        <p className="text-sm text-gray-500">{referral.position} @ {referral.company}</p>
+                        <p className="text-xs text-gray-400">{referral.date}</p>
+                      </div>
+                      
+                      <div className="text-right">
+                        <Badge variant={referral.status === '已入职' ? 'default' : 'outline'}>
+                          {referral.status}
+                        </Badge>
+                        <div className="text-lg font-semibold text-green-600 mt-1">¥{referral.commission}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Favorites Tab */}
+          <TabsContent value="favorites">
+            <Card>
+              <CardHeader>
+                <CardTitle>收藏的产品</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {favoriteProducts.map((product) => (
+                    <div key={product.id} className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                        <Badge variant="outline">{product.category}</Badge>
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <Heart className="h-4 w-4" />
+                          {product.likes}
+                        </div>
+                        <span>收藏于 {product.savedAt}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Products Tab (Enterprise only) */}
+          {userType === 'enterprise' && (
+            <TabsContent value="products">
+              <Card>
+                <CardHeader>
+                  <CardTitle>我发布的产品</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {myProducts.map((product) => (
+                      <div key={product.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                          <p className="text-sm text-gray-500">发布于 {product.publishedAt}</p>
+                          
+                          <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                            <div className="flex items-center gap-1">
+                              <Eye className="h-4 w-4" />
+                              {product.views}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Heart className="h-4 w-4" />
+                              {product.likes}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Users className="h-4 w-4" />
+                              {product.applications}申请
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="text-right">
+                          <Badge variant={product.status === '已上线' ? 'default' : 'outline'}>
+                            {product.status}
+                          </Badge>
+                          <div className="mt-2 space-x-2">
+                            <Button size="sm" variant="outline">编辑</Button>
+                            <Button size="sm" variant="outline">查看</Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="text-center mt-6">
+                    <Button>发布新产品</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {/* Settings Tab */}
+          <TabsContent value="settings">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>基本信息</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+                    <Input placeholder="请输入用户名" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
+                    <Input type="email" placeholder="请输入邮箱" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">手机号</label>
+                    <Input placeholder="请输入手机号" />
+                  </div>
+                  <Button>保存修改</Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>账户安全</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium">密码</div>
+                      <div className="text-sm text-gray-500">上次修改: 2024-05-15</div>
+                    </div>
+                    <Button variant="outline" size="sm">修改密码</Button>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium">两步验证</div>
+                      <div className="text-sm text-gray-500">增强账户安全性</div>
+                    </div>
+                    <Button variant="outline" size="sm">启用</Button>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium">登录设备</div>
+                      <div className="text-sm text-gray-500">管理登录设备</div>
+                    </div>
+                    <Button variant="outline" size="sm">查看</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
