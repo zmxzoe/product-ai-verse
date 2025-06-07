@@ -5,29 +5,31 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Search, Play, FileText, Github, Heart, Eye, Calendar, User } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ResourceCenter = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
+  const { t } = useLanguage();
 
   const categories = [
-    { id: 'all', name: '全部' },
-    { id: 'training', name: '模型训练/微调' },
-    { id: 'api', name: 'API调用' },
-    { id: 'frontend', name: '前端集成' },
-    { id: 'backend', name: '后端部署' },
-    { id: 'data', name: '数据清洗' },
-    { id: 'prompt', name: '提示工程' },
-    { id: 'framework', name: '开源框架' }
+    { id: 'all', name: t('category.all') },
+    { id: 'training', name: t('category.training') },
+    { id: 'api', name: t('category.api') },
+    { id: 'frontend', name: t('category.frontend') },
+    { id: 'backend', name: t('category.backend') },
+    { id: 'data', name: t('category.data') },
+    { id: 'prompt', name: t('category.prompt') },
+    { id: 'framework', name: t('category.framework') }
   ];
 
   const types = [
-    { id: 'all', name: '全部' },
-    { id: 'video', name: '视频教程' },
-    { id: 'article', name: '图文教程' },
-    { id: 'blog', name: '技术博客' },
-    { id: 'github', name: 'GitHub项目' }
+    { id: 'all', name: t('type.all') },
+    { id: 'video', name: t('type.video') },
+    { id: 'article', name: t('type.article') },
+    { id: 'blog', name: t('type.blog') },
+    { id: 'github', name: t('type.github') }
   ];
 
   const resources = [
@@ -111,9 +113,9 @@ const ResourceCenter = () => {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">AI 资源中心</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('resources.title')}</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              汇聚最新AI技术教程、开源项目和实战案例，助力你的AI学习之路
+              {t('resources.subtitle')}
             </p>
           </div>
 
@@ -123,7 +125,7 @@ const ResourceCenter = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 type="text"
-                placeholder="搜索教程、项目或技术关键词..."
+                placeholder={t('resources.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 text-lg"
@@ -141,7 +143,7 @@ const ResourceCenter = () => {
               {/* Category Filter */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">分类</CardTitle>
+                  <CardTitle className="text-lg">{t('resources.category')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {categories.map((category) => (
@@ -161,7 +163,7 @@ const ResourceCenter = () => {
               {/* Type Filter */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">资源类型</CardTitle>
+                  <CardTitle className="text-lg">{t('resources.type')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {types.map((type) => (
@@ -181,14 +183,14 @@ const ResourceCenter = () => {
               {/* Submission */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">贡献内容</CardTitle>
+                  <CardTitle className="text-lg">{t('resources.contribute')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-gray-600 mb-4">
-                    分享你的AI学习资源，帮助更多开发者
+                    {t('resources.contribute.desc')}
                   </p>
                   <Button className="w-full">
-                    投稿资源
+                    {t('resources.submit')}
                   </Button>
                 </CardContent>
               </Card>
@@ -199,13 +201,13 @@ const ResourceCenter = () => {
           <div className="lg:col-span-3">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">
-                学习资源 <span className="text-lg font-normal text-gray-500">({resources.length})</span>
+                {t('resources.learning')} <span className="text-lg font-normal text-gray-500">(4)</span>
               </h2>
               
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">最新</Button>
-                <Button variant="outline" size="sm">最热</Button>
-                <Button variant="outline" size="sm">最多点赞</Button>
+                <Button variant="outline" size="sm">{t('resources.latest')}</Button>
+                <Button variant="outline" size="sm">{t('resources.hot')}</Button>
+                <Button variant="outline" size="sm">{t('resources.most_liked')}</Button>
               </div>
             </div>
 
@@ -298,7 +300,7 @@ const ResourceCenter = () => {
             {/* Load More */}
             <div className="text-center mt-8">
               <Button variant="outline" size="lg">
-                加载更多资源
+                {t('resources.load_more')}
               </Button>
             </div>
           </div>

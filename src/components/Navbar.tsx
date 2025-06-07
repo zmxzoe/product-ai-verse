@@ -1,9 +1,16 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Plus, User, Menu } from 'lucide-react';
+import { Search, Plus, User, Menu, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NavbarProps {
   searchTerm: string;
@@ -12,12 +19,13 @@ interface NavbarProps {
 
 const Navbar = ({ searchTerm, onSearchChange }: NavbarProps) => {
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
 
   const navItems = [
-    { path: '/', name: '产品广场' },
-    { path: '/resources', name: '资源中心' },
-    { path: '/services', name: '服务市场' },
-    { path: '/jobs', name: '招聘广场' }
+    { path: '/', name: t('navbar.products') },
+    { path: '/resources', name: t('navbar.resources') },
+    { path: '/services', name: t('navbar.services') },
+    { path: '/jobs', name: t('navbar.jobs') }
   ];
 
   return (
@@ -29,7 +37,7 @@ const Navbar = ({ searchTerm, onSearchChange }: NavbarProps) => {
             <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               AI Verse
             </Link>
-            <span className="hidden sm:block text-sm text-gray-500">AI产品生态平台</span>
+            <span className="hidden sm:block text-sm text-gray-500">{t('navbar.platform')}</span>
           </div>
 
           {/* Navigation */}
@@ -55,7 +63,7 @@ const Navbar = ({ searchTerm, onSearchChange }: NavbarProps) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 type="text"
-                placeholder="搜索AI产品、技术或服务..."
+                placeholder={t('navbar.search')}
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -65,10 +73,28 @@ const Navbar = ({ searchTerm, onSearchChange }: NavbarProps) => {
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-4">
+            {/* Language Switcher */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Languages className="h-5 w-5" />
+                  <span className="ml-1 text-xs">{language.toUpperCase()}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setLanguage('zh')}>
+                  中文
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage('en')}>
+                  English
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Link to="/upload">
               <Button variant="outline" size="sm" className="hidden sm:flex items-center space-x-2">
                 <Plus className="h-4 w-4" />
-                <span>发布产品</span>
+                <span>{t('navbar.publish')}</span>
               </Button>
             </Link>
             <Link to="/user">
