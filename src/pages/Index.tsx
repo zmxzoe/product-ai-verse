@@ -195,7 +195,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
       
       {/* AI Search */}
       <AISearchBar onSearch={handleAISearch} />

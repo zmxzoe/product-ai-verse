@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
+import AISearchBar from '@/components/AISearchBar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Zap, DollarSign, Shield, Cpu, Cloud, CreditCard, BarChart3, Mail, Megaphone, Globe, Image } from 'lucide-react';
+import { Zap, DollarSign, Shield, Cpu, Cloud, CreditCard, BarChart3, Mail, Megaphone, Globe, Image } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 const ServiceMarket = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -126,9 +126,20 @@ const ServiceMarket = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const handleAISearch = (query: string) => {
+    setSearchTerm(query);
+    toast({
+      title: "AI搜索启动",
+      description: `正在为您智能推荐服务: ${query}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
+      
+      {/* AI Search */}
+      <AISearchBar onSearch={handleAISearch} />
       
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
@@ -138,20 +149,6 @@ const ServiceMarket = () => {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               一键接入第三方服务，快速构建你的AI应用生态
             </p>
-          </div>
-
-          {/* Search */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                type="text"
-                placeholder="搜索API、服务或工具..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 text-lg"
-              />
-            </div>
           </div>
         </div>
       </div>
