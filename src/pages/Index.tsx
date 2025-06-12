@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import AISearchBar from '@/components/AISearchBar';
@@ -20,72 +21,117 @@ const Index = () => {
     });
   };
 
+  const handleLike = (id: string) => {
+    toast({
+      title: "已点赞",
+      description: "感谢您的支持！",
+    });
+  };
+
+  const handleBookmark = (id: string) => {
+    toast({
+      title: "已收藏",
+      description: "产品已添加到收藏夹",
+    });
+  };
+
+  const handleShare = (id: string) => {
+    toast({
+      title: "分享成功",
+      description: "链接已复制到剪贴板",
+    });
+  };
+
   const products = [
     {
-      id: 1,
+      id: '1',
       name: 'AI 写作助手',
       description: '智能生成高质量文章，提高写作效率',
       category: '写作',
-      price: 99,
-      imageUrl: 'https://images.unsplash.com/photo-1583527403614-40ef95045448?w=500&h=300&fit=crop&crop=center',
-      rating: 4.5,
-      reviewCount: 120,
-      createdAt: '2024-01-20T12:00:00.000Z',
+      tags: ['AI写作', '内容生成', '效率工具'],
+      images: ['photo-1583527403614-40ef95045448'],
+      likes: 120,
+      comments: 45,
+      launchDate: '2024-01-20',
+      link: 'https://example.com/ai-writer',
+      hasJobs: false,
+      hasTasks: true,
+      location: '全球'
     },
     {
-      id: 2,
+      id: '2',
       name: '图像生成 AI',
       description: '快速生成各种风格的图像，满足设计需求',
       category: '图像',
-      price: 149,
-      imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop&crop=center',
-      rating: 4.8,
-      reviewCount: 230,
-      createdAt: '2024-02-15T10:30:00.000Z',
+      tags: ['图像生成', 'AI设计', '创意工具'],
+      images: ['photo-1677442136019-21780ecad995'],
+      likes: 230,
+      comments: 89,
+      launchDate: '2024-02-15',
+      link: 'https://example.com/ai-image',
+      hasJobs: true,
+      hasTasks: false,
+      location: '美国'
     },
     {
-      id: 3,
+      id: '3',
       name: '代码生成工具',
       description: '自动生成代码，降低开发成本',
       category: '开发',
-      price: 199,
-      imageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&h=300&fit=crop&crop=center',
-      rating: 4.2,
-      reviewCount: 85,
-      createdAt: '2024-03-01T09:00:00.000Z',
+      tags: ['代码生成', 'AI编程', '开发工具'],
+      images: ['photo-1555949963-aa79dcee981c'],
+      likes: 85,
+      comments: 32,
+      launchDate: '2024-03-01',
+      link: 'https://example.com/ai-code',
+      hasJobs: true,
+      hasTasks: true,
+      location: '中国'
     },
     {
-      id: 4,
+      id: '4',
       name: '视频编辑 AI',
       description: '智能剪辑视频，提升视频质量',
       category: '视频',
-      price: 129,
-      imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=300&fit=crop&crop=center',
-      rating: 4.6,
-      reviewCount: 155,
-      createdAt: '2024-03-10T14:45:00.000Z',
+      tags: ['视频编辑', 'AI剪辑', '媒体工具'],
+      images: ['photo-1516321318423-f06f85e504b3'],
+      likes: 155,
+      comments: 67,
+      launchDate: '2024-03-10',
+      link: 'https://example.com/ai-video',
+      hasJobs: false,
+      hasTasks: true,
+      location: '欧洲'
     },
     {
-      id: 5,
+      id: '5',
       name: '数据分析平台',
       description: '深度分析数据，发现潜在价值',
       category: '数据',
-      price: 249,
-      imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&h=300&fit=crop&crop=center',
-      rating: 4.9,
-      reviewCount: 310,
-      createdAt: '2024-03-25T11:15:00.000Z',
+      tags: ['数据分析', 'AI洞察', '商业智能'],
+      images: ['photo-1461749280684-dccba630e2f6'],
+      likes: 310,
+      comments: 142,
+      launchDate: '2024-03-25',
+      link: 'https://example.com/ai-data',
+      hasJobs: true,
+      hasTasks: false,
+      location: '新加坡'
     },
     {
-      id: 6,
+      id: '6',
       name: 'AI 绘画工具',
       description: '通过人工智能技术创作独特的艺术作品',
       category: '图像',
-      price: 179,
-      imageUrl: 'https://images.unsplash.com/photo-1500856015390-3a8439c8ba9a?w=500&h=300&fit=crop&crop=center',
-      rating: 4.7,
-      reviewCount: 188,
-      createdAt: '2024-04-05T16:00:00.000Z',
+      tags: ['AI绘画', '艺术创作', '创意工具'],
+      images: ['photo-1500856015390-3a8439c8ba9a'],
+      likes: 188,
+      comments: 73,
+      launchDate: '2024-04-05',
+      link: 'https://example.com/ai-art',
+      hasJobs: false,
+      hasTasks: true,
+      location: '日本'
     },
   ];
 
@@ -107,11 +153,11 @@ const Index = () => {
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === 'newest') {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      return new Date(b.launchDate).getTime() - new Date(a.launchDate).getTime();
     } else if (sortBy === 'priceLowToHigh') {
-      return a.price - b.price;
+      return a.likes - b.likes;
     } else {
-      return b.price - a.price;
+      return b.likes - a.likes;
     }
   });
 
@@ -171,7 +217,13 @@ const Index = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard 
+              key={product.id} 
+              product={product}
+              onLike={handleLike}
+              onBookmark={handleBookmark}
+              onShare={handleShare}
+            />
           ))}
         </div>
       </div>
