@@ -10,7 +10,6 @@ import { Heart, Share2, Bookmark, ExternalLink, MapPin, Users, Calendar, Message
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const [searchTerm, setSearchTerm] = useState('');
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -72,7 +71,7 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

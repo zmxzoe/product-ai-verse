@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
+import AISearchBar from '@/components/AISearchBar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Play, FileText, Github, Heart, Eye, Calendar, User } from 'lucide-react';
+import { Play, FileText, Github, Heart, Eye, Calendar, User } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { toast } from '@/hooks/use-toast';
 
 const ResourceCenter = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -105,9 +106,20 @@ const ResourceCenter = () => {
     }
   };
 
+  const handleAISearch = (query: string) => {
+    setSearchTerm(query);
+    toast({
+      title: "AI搜索启动",
+      description: `正在为您智能推荐资源: ${query}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
+      
+      {/* AI Search */}
+      <AISearchBar onSearch={handleAISearch} />
       
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
@@ -117,20 +129,6 @@ const ResourceCenter = () => {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               {t('resources.subtitle')}
             </p>
-          </div>
-
-          {/* Search */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                type="text"
-                placeholder={t('resources.search')}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 text-lg"
-              />
-            </div>
           </div>
         </div>
       </div>

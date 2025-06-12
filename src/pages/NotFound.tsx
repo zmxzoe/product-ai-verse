@@ -1,12 +1,11 @@
 
 import React from 'react';
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from '@/components/Navbar';
 
 const NotFound = () => {
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     console.error(
@@ -17,7 +16,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
       
       <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 64px)' }}>
         <div className="text-center">

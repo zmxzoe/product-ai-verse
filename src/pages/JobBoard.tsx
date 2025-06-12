@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
+import AISearchBar from '@/components/AISearchBar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, MapPin, DollarSign, Users, Clock, Briefcase, Home } from 'lucide-react';
+import { MapPin, DollarSign, Users, Clock, Briefcase } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 const JobBoard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -188,9 +190,20 @@ const JobBoard = () => {
     return matchesSearch && matchesLocation && matchesType;
   });
 
+  const handleAISearch = (query: string) => {
+    setSearchTerm(query);
+    toast({
+      title: "AI搜索启动",
+      description: `正在为您智能推荐职位: ${query}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
+      
+      {/* AI Search */}
+      <AISearchBar onSearch={handleAISearch} />
       
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
@@ -202,40 +215,27 @@ const JobBoard = () => {
             </p>
           </div>
 
-          {/* Search and Filters */}
-          <div className="space-y-4">
-            <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                type="text"
-                placeholder="搜索职位、公司或技能..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 text-lg"
-              />
-            </div>
+          {/* Filters */}
+          <div className="flex flex-wrap gap-4 justify-center">
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-sm"
+            >
+              {locations.map(location => (
+                <option key={location.id} value={location.id}>{location.name}</option>
+              ))}
+            </select>
             
-            <div className="flex flex-wrap gap-4 justify-center">
-              <select
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm"
-              >
-                {locations.map(location => (
-                  <option key={location.id} value={location.id}>{location.name}</option>
-                ))}
-              </select>
-              
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm"
-              >
-                {jobTypes.map(type => (
-                  <option key={type.id} value={type.id}>{type.name}</option>
-                ))}
-              </select>
-            </div>
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-sm"
+            >
+              {jobTypes.map(type => (
+                <option key={type.id} value={type.id}>{type.name}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

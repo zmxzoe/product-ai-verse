@@ -9,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Settings, Briefcase, Users, Heart, DollarSign, Trophy, Calendar, Star, Eye } from 'lucide-react';
 
 const UserCenter = () => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [userType, setUserType] = useState('individual'); // 'individual' or 'enterprise'
 
   const userStats = {
@@ -112,7 +111,7 @@ const UserCenter = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
