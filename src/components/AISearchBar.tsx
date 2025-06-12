@@ -7,9 +7,19 @@ import { Badge } from '@/components/ui/badge';
 
 interface AISearchBarProps {
   onSearch: (query: string) => void;
+  placeholder?: string;
+  aiPlaceholder?: string;
+  quickPrompts?: string[];
+  context?: string;
 }
 
-const AISearchBar = ({ onSearch }: AISearchBarProps) => {
+const AISearchBar = ({ 
+  onSearch, 
+  placeholder = "搜索内容...",
+  aiPlaceholder = "告诉我你想要什么...",
+  quickPrompts = [],
+  context = "通用"
+}: AISearchBarProps) => {
   const [query, setQuery] = useState('');
   const [isAIMode, setIsAIMode] = useState(false);
 
@@ -24,14 +34,6 @@ const AISearchBar = ({ onSearch }: AISearchBarProps) => {
       handleSearch();
     }
   };
-
-  const quickPrompts = [
-    '帮我找一个AI写作工具',
-    '推荐最佳图像生成AI',
-    '我需要代码生成工具',
-    '寻找视频编辑AI',
-    '推荐数据分析工具'
-  ];
 
   return (
     <div className="bg-gradient-to-br from-background via-muted/30 to-background py-8 border-b">
@@ -71,11 +73,7 @@ const AISearchBar = ({ onSearch }: AISearchBarProps) => {
           </div>
           <Input
             type="text"
-            placeholder={
-              isAIMode 
-                ? "告诉我你想要什么样的AI工具，比如：我需要一个能帮我写代码的AI助手..."
-                : "搜索AI产品、工具或技术..."
-            }
+            placeholder={isAIMode ? aiPlaceholder : placeholder}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -104,25 +102,27 @@ const AISearchBar = ({ onSearch }: AISearchBarProps) => {
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm text-primary font-medium">AI智能推荐已启用</span>
+              <span className="text-sm text-primary font-medium">AI智能推荐已启用 - {context}</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              描述你的需求，AI会为你精准推荐最适合的工具
+              描述你的需求，AI会为你精准推荐相关内容
             </p>
             
             {/* Quick Prompts */}
-            <div className="flex flex-wrap justify-center gap-2">
-              {quickPrompts.map((prompt, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className="cursor-pointer hover:bg-accent text-xs py-1 px-3"
-                  onClick={() => setQuery(prompt)}
-                >
-                  {prompt}
-                </Badge>
-              ))}
-            </div>
+            {quickPrompts.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2">
+                {quickPrompts.map((prompt, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="cursor-pointer hover:bg-accent text-xs py-1 px-3"
+                    onClick={() => setQuery(prompt)}
+                  >
+                    {prompt}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

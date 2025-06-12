@@ -110,18 +110,30 @@ const ResourceCenter = () => {
     setSearchTerm(query);
     toast({
       title: "AI搜索启动",
-      description: `正在为您智能推荐资源: ${query}`,
+      description: `正在为您智能推荐学习资源: ${query}`,
     });
   };
+
+  const quickPrompts = [
+    '推荐ChatGPT使用教程',
+    '找LangChain实战案例',
+    '我想学习Prompt工程',
+    '推荐AI开发框架',
+    '寻找机器学习入门资料'
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       
-      {/* AI Search */}
-      <AISearchBar onSearch={handleAISearch} />
+      <AISearchBar 
+        onSearch={handleAISearch}
+        placeholder="搜索学习资源、教程或文档..."
+        aiPlaceholder="告诉我你想学习什么，比如：我想学习如何使用ChatGPT API..."
+        quickPrompts={quickPrompts}
+        context="学习资源推荐"
+      />
       
-      {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center mb-8">
@@ -135,10 +147,8 @@ const ResourceCenter = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters */}
           <div className="lg:col-span-1">
             <div className="space-y-6">
-              {/* Category Filter */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">{t('resources.category')}</CardTitle>
@@ -158,7 +168,6 @@ const ResourceCenter = () => {
                 </CardContent>
               </Card>
 
-              {/* Type Filter */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">{t('resources.type')}</CardTitle>
@@ -178,7 +187,6 @@ const ResourceCenter = () => {
                 </CardContent>
               </Card>
 
-              {/* Submission */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">{t('resources.contribute')}</CardTitle>
@@ -195,7 +203,6 @@ const ResourceCenter = () => {
             </div>
           </div>
 
-          {/* Resources */}
           <div className="lg:col-span-3">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">
@@ -295,7 +302,6 @@ const ResourceCenter = () => {
               ))}
             </div>
 
-            {/* Load More */}
             <div className="text-center mt-8">
               <Button variant="outline" size="lg">
                 {t('resources.load_more')}

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import AISearchBar from '@/components/AISearchBar';
@@ -198,12 +197,25 @@ const JobBoard = () => {
     });
   };
 
+  const quickPrompts = [
+    '推荐AI算法工程师职位',
+    '找远程工作机会',
+    '我想找产品经理岗位',
+    '推荐前端开发职位',
+    '寻找兼职AI训练师'
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       
-      {/* AI Search */}
-      <AISearchBar onSearch={handleAISearch} />
+      <AISearchBar 
+        onSearch={handleAISearch}
+        placeholder="搜索职位、公司或技能..."
+        aiPlaceholder="告诉我你想找什么工作，比如：我想找一个AI相关的远程工作..."
+        quickPrompts={quickPrompts}
+        context="职位推荐"
+      />
       
       {/* Header */}
       <div className="bg-white border-b border-gray-200">

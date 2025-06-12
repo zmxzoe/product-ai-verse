@@ -130,18 +130,30 @@ const ServiceMarket = () => {
     setSearchTerm(query);
     toast({
       title: "AI搜索启动",
-      description: `正在为您智能推荐服务: ${query}`,
+      description: `正在为您智能推荐第三方服务: ${query}`,
     });
   };
+
+  const quickPrompts = [
+    '推荐大模型API服务',
+    '找云服务器提供商',
+    '我需要支付解决方案',
+    '推荐数据分析平台',
+    '寻找邮件发送服务'
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       
-      {/* AI Search */}
-      <AISearchBar onSearch={handleAISearch} />
+      <AISearchBar 
+        onSearch={handleAISearch}
+        placeholder="搜索第三方服务、API或工具..."
+        aiPlaceholder="告诉我你需要什么服务，比如：我需要一个稳定的大模型API..."
+        quickPrompts={quickPrompts}
+        context="第三方服务推荐"
+      />
       
-      {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center mb-8">
