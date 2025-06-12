@@ -1,7 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import AISearchBar from '@/components/AISearchBar';
+import TrendingSection from '@/components/TrendingSection';
 import FilterBar from '@/components/FilterBar';
 import SortingTabs from '@/components/SortingTabs';
 import ProductCard from '@/components/ProductCard';
@@ -188,12 +189,27 @@ const Index = () => {
     console.log('Shared product:', productId);
   };
 
+  const handleAISearch = (query: string) => {
+    console.log('AI Search query:', query);
+    setSearchTerm(query);
+    toast({
+      title: "AI搜索启动",
+      description: `正在为您智能推荐: ${query}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       
       {/* Hero Section */}
       <HeroSection searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      
+      {/* AI Search Bar */}
+      <AISearchBar onSearch={handleAISearch} />
+      
+      {/* Trending Section */}
+      <TrendingSection />
       
       <FilterBar
         selectedCategory={selectedCategory}
