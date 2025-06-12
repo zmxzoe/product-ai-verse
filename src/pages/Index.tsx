@@ -110,11 +110,11 @@ const Index = () => {
   const [selectedSort, setSelectedSort] = useState('latest');
   const [filteredProducts, setFilteredProducts] = useState(mockProducts);
 
-  // Filter products based on search, category, and tags
+  // Filter and sort products
   useEffect(() => {
     let filtered = mockProducts;
 
-    // Filter by search term
+    // Apply search filter
     if (searchTerm) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -123,21 +123,19 @@ const Index = () => {
       );
     }
 
-    // Filter by category
+    // Apply category filter
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => 
-        product.category === selectedCategory
-      );
+      filtered = filtered.filter(product => product.category === selectedCategory);
     }
 
-    // Filter by tags
+    // Apply tag filter
     if (selectedTags.length > 0) {
       filtered = filtered.filter(product =>
         selectedTags.some(tag => product.tags.includes(tag))
       );
     }
 
-    // Sort products
+    // Apply sorting
     switch (selectedSort) {
       case 'popular':
         filtered.sort((a, b) => b.likes - a.likes);
@@ -170,7 +168,6 @@ const Index = () => {
       title: "已点赞",
       description: "感谢你的支持！",
     });
-    console.log('Liked product:', productId);
   };
 
   const handleBookmark = (productId: string) => {
@@ -178,7 +175,6 @@ const Index = () => {
       title: "已收藏",
       description: "产品已添加到收藏夹",
     });
-    console.log('Bookmarked product:', productId);
   };
 
   const handleShare = (productId: string) => {
@@ -186,11 +182,9 @@ const Index = () => {
       title: "已复制链接",
       description: "产品链接已复制到剪贴板",
     });
-    console.log('Shared product:', productId);
   };
 
   const handleAISearch = (query: string) => {
-    console.log('AI Search query:', query);
     setSearchTerm(query);
     toast({
       title: "AI搜索启动",
@@ -200,14 +194,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
       <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       
-      {/* AI Search Bar */}
+      {/* AI Search */}
       <AISearchBar onSearch={handleAISearch} />
       
-      {/* Trending Section */}
+      {/* Trending */}
       <TrendingSection />
       
+      {/* Filters */}
       <FilterBar
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
@@ -215,12 +211,13 @@ const Index = () => {
         onTagToggle={handleTagToggle}
       />
       
+      {/* Sorting */}
       <SortingTabs
         selectedSort={selectedSort}
         onSortChange={setSelectedSort}
       />
 
-      {/* Product Grid */}
+      {/* Products */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
@@ -242,7 +239,7 @@ const Index = () => {
         )}
       </div>
 
-      {/* Load More Button */}
+      {/* Load More */}
       {filteredProducts.length > 0 && (
         <div className="text-center pb-12">
           <button className="px-8 py-3 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-full hover:from-primary/90 hover:to-primary/70 transition-all duration-300 font-medium">
@@ -251,7 +248,7 @@ const Index = () => {
         </div>
       )}
 
-      {/* Social Media Bar */}
+      {/* Social Media */}
       <SocialMediaBar />
     </div>
   );
