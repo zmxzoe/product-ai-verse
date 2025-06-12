@@ -1,6 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
-import HeroSection from '@/components/HeroSection';
 import AISearchBar from '@/components/AISearchBar';
 import TrendingSection from '@/components/TrendingSection';
 import FilterBar from '@/components/FilterBar';
@@ -201,9 +201,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-      
-      {/* Hero Section */}
-      <HeroSection searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       
       {/* AI Search Bar */}
       <AISearchBar onSearch={handleAISearch} />
