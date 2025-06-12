@@ -1,8 +1,10 @@
 
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
+import HeroSection from '@/components/HeroSection';
 import AISearchBar from '@/components/AISearchBar';
 import ProductCard from '@/components/ProductCard';
+import TrendingSection from '@/components/TrendingSection';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from '@/hooks/use-toast';
@@ -19,6 +21,10 @@ const Index = () => {
       title: "AI搜索启动",
       description: `正在为您智能推荐AI产品: ${query}`,
     });
+  };
+
+  const handleHeroSearch = (query: string) => {
+    setSearchTerm(query);
   };
 
   const handleLike = (id: string) => {
@@ -173,6 +179,13 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       
+      {/* Hero Section */}
+      <HeroSection 
+        searchTerm={searchTerm}
+        onSearchChange={handleHeroSearch}
+      />
+      
+      {/* AI Search Bar */}
       <AISearchBar 
         onSearch={handleAISearch}
         placeholder="搜索AI产品、工具或服务..."
@@ -180,11 +193,15 @@ const Index = () => {
         quickPrompts={quickPrompts}
         context="AI产品推荐"
       />
+
+      {/* Trending Section */}
+      <TrendingSection />
       
+      {/* Main Products Section */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900">{t('home.title')}</h1>
-          <p className="mt-2 text-lg text-gray-600">{t('home.subtitle')}</p>
+          <h2 className="text-3xl font-bold text-gray-900">所有AI产品</h2>
+          <p className="mt-2 text-lg text-gray-600">发现和探索最新的AI工具和应用</p>
         </div>
       </div>
 
