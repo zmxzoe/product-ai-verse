@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import CategoryRankingCards from '@/components/CategoryRankingCards';
 import AISearchBar from '@/components/AISearchBar';
 import ProductCard from '@/components/ProductCard';
 import TrendingSection from '@/components/TrendingSection';
@@ -184,6 +185,9 @@ const Index = () => {
         searchTerm={searchTerm}
         onSearchChange={handleHeroSearch}
       />
+      
+      {/* Category Ranking Cards */}
+      <CategoryRankingCards />
       
       {/* AI Search Bar */}
       <AISearchBar 
