@@ -93,7 +93,7 @@ const Navbar = () => {
                 <span>{t('navbar.publish')}</span>
               </Button>
             </Link>
-            <Link to="/user">
+            <Link to="/auth">
               <Button variant="ghost" size="sm">
                 <User className="h-5 w-5" />
               </Button>
