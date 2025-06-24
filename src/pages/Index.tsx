@@ -29,14 +29,14 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       
+      {/* Category Ranking Cards - Moved to the very top */}
+      <CategoryRankingCards />
+      
       {/* Hero Section */}
       <HeroSection 
         searchTerm={searchTerm}
         onSearchChange={handleHeroSearch}
       />
-      
-      {/* Category Ranking Cards */}
-      <CategoryRankingCards />
       
       {/* AI Search Bar */}
       <AISearchBar 
