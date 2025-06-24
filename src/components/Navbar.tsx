@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Plus, User, Menu, Languages } from 'lucide-react';
+import { Plus, User, Menu, Languages, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -21,6 +21,11 @@ const Navbar = () => {
     { path: '/services', name: t('navbar.services') },
     { path: '/jobs', name: t('navbar.jobs') }
   ];
+
+  const handleWalletConnect = () => {
+    // TODO: Implement wallet connection logic
+    console.log('Connecting wallet...');
+  };
 
   return (
     <nav className="bg-white/90 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
@@ -70,6 +75,17 @@ const Navbar = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Wallet Connect Button */}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleWalletConnect}
+              className="hidden sm:flex items-center space-x-2"
+            >
+              <Wallet className="h-4 w-4" />
+              <span>连接钱包</span>
+            </Button>
 
             <Link to="/upload">
               <Button variant="outline" size="sm" className="hidden sm:flex items-center space-x-2">
