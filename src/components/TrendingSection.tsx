@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Star, TrendingUp, Users, Calendar, Tag } from 'lucide-react';
+import { Star, Clock, Users, Calendar, Tag } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TrendingProduct {
@@ -103,10 +102,10 @@ const TrendingSection = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-foreground mb-2">
-              <TrendingUp className="inline h-8 w-8 mr-2 text-primary" />
-              最热门产品
+              <Clock className="inline h-8 w-8 mr-2 text-primary" />
+              最新产品
             </h2>
-            <p className="text-muted-foreground">精选高质量AI工具，享受专属优惠</p>
+            <p className="text-muted-foreground">最新上线的高质量AI工具，抢先体验</p>
           </div>
           
           {/* Period Selector */}
@@ -125,15 +124,15 @@ const TrendingSection = () => {
           </div>
         </div>
 
-        {/* Trending Products Grid */}
+        {/* Latest Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {trendingProducts.map((product, index) => (
             <Card key={product.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-              {/* Discount Badge */}
+              {/* New Badge */}
               <div className="absolute top-4 right-4 z-10">
-                <Badge className="bg-red-500 text-white font-semibold">
+                <Badge className="bg-green-500 text-white font-semibold">
                   <Tag className="h-3 w-3 mr-1" />
-                  {product.discount}
+                  新上线
                 </Badge>
               </div>
               
@@ -225,7 +224,7 @@ const TrendingSection = () => {
         {/* View More */}
         <div className="text-center mt-8">
           <Button variant="outline" size="lg">
-            查看更多热门产品
+            查看更多新产品
           </Button>
         </div>
       </div>
