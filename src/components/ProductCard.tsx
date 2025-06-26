@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -29,8 +30,22 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onLike, onBookmark, onShare }: ProductCardProps) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleActionClick = (e: React.MouseEvent, action: () => void) => {
+    e.stopPropagation();
+    action();
+  };
+
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white border border-gray-200">
+    <Card 
+      className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white border border-gray-200 cursor-pointer"
+      onClick={handleCardClick}
+    >
       <CardContent className="p-4">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
@@ -94,7 +109,7 @@ const ProductCard = ({ product, onLike, onBookmark, onShare }: ProductCardProps)
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onLike(product.id)}
+            onClick={(e) => handleActionClick(e, () => onLike(product.id))}
             className="text-gray-400 hover:text-red-500 h-8 w-8 p-0"
           >
             <Star className="h-3 w-3" />
@@ -102,7 +117,7 @@ const ProductCard = ({ product, onLike, onBookmark, onShare }: ProductCardProps)
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onBookmark(product.id)}
+            onClick={(e) => handleActionClick(e, () => onBookmark(product.id))}
             className="text-gray-400 hover:text-blue-500 h-8 w-8 p-0"
           >
             <Bookmark className="h-3 w-3" />
@@ -110,7 +125,7 @@ const ProductCard = ({ product, onLike, onBookmark, onShare }: ProductCardProps)
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onShare(product.id)}
+            onClick={(e) => handleActionClick(e, () => onShare(product.id))}
             className="text-gray-400 hover:text-green-500 h-8 w-8 p-0"
           >
             <Share className="h-3 w-3" />
@@ -118,6 +133,7 @@ const ProductCard = ({ product, onLike, onBookmark, onShare }: ProductCardProps)
           <Button
             variant="ghost"
             size="sm"
+            onClick={(e) => handleActionClick(e, () => window.open(product.link, '_blank'))}
             className="text-gray-400 hover:text-blue-600 h-8 w-8 p-0"
           >
             <ExternalLink className="h-3 w-3" />

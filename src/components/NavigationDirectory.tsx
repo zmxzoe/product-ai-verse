@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -149,6 +148,16 @@ const NavigationDirectory = () => {
 
   const featuredItems = navigationItems.filter(item => item.featured);
 
+  const handleVisitTool = (url: string) => {
+    // For external tools, open in new tab
+    if (url.startsWith('http')) {
+      window.open(url, '_blank');
+    } else {
+      // For internal tools, could navigate to detail page
+      window.open(url, '_blank');
+    }
+  };
+
   return (
     <div className="bg-gradient-to-br from-gray-50 via-white to-blue-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -217,7 +226,7 @@ const NavigationDirectory = () => {
                       ))}
                     </div>
                     <Button 
-                      onClick={() => window.open(item.url, '_blank')} 
+                      onClick={() => handleVisitTool(item.url)} 
                       className="w-full"
                       size="sm"
                     >
@@ -272,7 +281,7 @@ const NavigationDirectory = () => {
                     ))}
                   </div>
                   <Button 
-                    onClick={() => window.open(item.url, '_blank')} 
+                    onClick={() => handleVisitTool(item.url)} 
                     variant="outline" 
                     className="w-full"
                     size="sm"
