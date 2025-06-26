@@ -2,8 +2,9 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import CategoryRankingCards from '@/components/CategoryRankingCards';
 import AISearchBar from '@/components/AISearchBar';
+import NavigationDirectory from '@/components/NavigationDirectory';
+import CategoryRankingCards from '@/components/CategoryRankingCards';
 import TrendingSection from '@/components/TrendingSection';
 import MainProductsSection from '@/components/MainProductsSection';
 import { useProducts } from '@/hooks/useProducts';
@@ -44,7 +45,10 @@ const Index = () => {
         context="AI产品推荐"
       />
 
-      {/* Category Ranking Cards - Moved down */}
+      {/* Navigation Directory - 新增的导航站功能 */}
+      <NavigationDirectory />
+
+      {/* Category Ranking Cards */}
       <CategoryRankingCards />
 
       {/* Trending Section */}
