@@ -29,9 +29,6 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       
-      {/* Category Ranking Cards - Moved to the very top */}
-      <CategoryRankingCards />
-      
       {/* Hero Section */}
       <HeroSection 
         searchTerm={searchTerm}
@@ -46,6 +43,9 @@ const Index = () => {
         quickPrompts={quickPrompts}
         context="AI产品推荐"
       />
+
+      {/* Category Ranking Cards - Moved down */}
+      <CategoryRankingCards />
 
       {/* Trending Section */}
       <TrendingSection />
