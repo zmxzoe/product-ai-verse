@@ -1,8 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, Star, Zap, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { TrendingUp, Star, Zap, Users, Filter } from 'lucide-react';
 
 interface RankingItem {
   id: string;
@@ -13,8 +20,11 @@ interface RankingItem {
 }
 
 const CategoryRankingCards = () => {
-  const categories = [
+  const [selectedFilter, setSelectedFilter] = useState('all');
+
+  const allCategories = [
     {
+      id: 'ai-writing',
       title: '🤖 AI写作',
       icon: <Zap className="h-4 w-4" />,
       color: 'from-blue-500 to-purple-600',
@@ -25,6 +35,7 @@ const CategoryRankingCards = () => {
       ]
     },
     {
+      id: 'image-generation',
       title: '🎨 图像生成',
       icon: <Star className="h-4 w-4" />,
       color: 'from-pink-500 to-rose-600',
@@ -35,6 +46,7 @@ const CategoryRankingCards = () => {
       ]
     },
     {
+      id: 'code-generation',
       title: '💻 代码生成',
       icon: <Users className="h-4 w-4" />,
       color: 'from-green-500 to-emerald-600',
@@ -45,6 +57,7 @@ const CategoryRankingCards = () => {
       ]
     },
     {
+      id: 'data-analysis',
       title: '📊 数据分析',
       icon: <TrendingUp className="h-4 w-4" />,
       color: 'from-orange-500 to-red-600',
@@ -56,16 +69,50 @@ const CategoryRankingCards = () => {
     }
   ];
 
+  const filterOptions = [
+    { id: 'all', name: '全部分类' },
+    { id: 'ai-writing', name: 'AI写作' },
+    { id: 'image-generation', name: '图像生成' },
+    { id: 'code-generation', name: '代码生成' },
+    { id: 'data-analysis', name: '数据分析' }
+  ];
+
+  const filteredCategories = selectedFilter === 'all' 
+    ? allCategories 
+    : allCategories.filter(category => category.id === selectedFilter);
+
   return (
     <div className="bg-white py-6 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-1">🏆 热门排行</h2>
-          <p className="text-sm text-gray-600">各领域顶尖AI工具</p>
+        <div className="flex items-center justify-between mb-6">
+          <div className="text-center flex-1">
+            <h2 className="text-xl font-bold text-gray-900 mb-1">🏆 热门排行</h2>
+            <p className="text-sm text-gray-600">各领域顶尖AI工具</p>
+          </div>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="ml-4">
+                <Filter className="h-4 w-4 mr-2" />
+                {filterOptions.find(option => option.id === selectedFilter)?.name}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {filterOptions.map((option) => (
+                <DropdownMenuItem
+                  key={option.id}
+                  onClick={() => setSelectedFilter(option.id)}
+                  className={selectedFilter === option.id ? 'bg-accent' : ''}
+                >
+                  {option.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {categories.map((category, index) => (
+          {filteredCategories.map((category, index) => (
             <Card key={index} className="hover:shadow-md transition-shadow duration-300">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
